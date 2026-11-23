@@ -1,0 +1,19 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: backend-scaledobject
+  namespace: chess-puzzle
+spec:
+  scaleTargetRef:
+    name: backend
+  pollingInterval: 30
+  cooldownPeriod: 300
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus-server.monitoring.svc.cluster.local:80
+        metricName: http_requests_per_second
+        query: sum(rate(http_requests_total{namespace="chess-puzzle"}[2m]))
+        threshold: "50"

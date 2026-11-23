@@ -1,0 +1,9 @@
+aws_region         = "us-east-1"
+project_name       = "chess-puzzle"
+environment        = "dev"
+node_instance_type = "t3.medium"
+node_desired_size  = 1
+node_min_size      = 1
+node_max_size      = 3
+use_spot_instances = true
+db_instance_class  = "db.t3.micro"

@@ -1,0 +1,57 @@
+.puzzle-loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+
+.puzzle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.puzzle-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.puzzle-difficulty {
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+
+.puzzle-rating {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.puzzle-timer {
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.puzzle-instruction {
+  text-align: center;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.puzzle-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-next {
+  padding: 12px 32px;
+  font-size: 1.1rem;
+}
