@@ -1,0 +1,83 @@
+INSERT INTO puzzles (fen, moves, rating, difficulty, themes, source) VALUES
+-- BEGINNER (12 puzzles, rating 400-850)
+('6k1/5ppp/8/8/8/8/5PPP/4R1K1 w - - 0 1', 'e1e8', 500, 'beginner', 'mateIn1 backRankMate', 'lichess'),
+('2kr4/ppp2ppp/8/8/8/8/PPP2PPP/4R1K1 w - - 0 1', 'e1e8', 550, 'beginner', 'mateIn1 backRankMate', 'lichess'),
+('6k1/5ppp/8/8/8/8/5PPP/3Q2K1 w - - 0 1', 'd1d8', 500, 'beginner', 'mateIn1', 'lichess'),
+('r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4', 'h5f7', 600, 'beginner', 'mateIn1 scholarsMate', 'lichess'),
+('rnbqkbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR b KQkq - 0 3', 'h4e1', 400, 'beginner', 'mateIn1 foolsMate', 'lichess'),
+('6k1/5ppp/8/6Q1/8/8/5PPP/6K1 w - - 0 1', 'g5d8', 500, 'beginner', 'mateIn1', 'lichess'),
+('5k2/5ppp/8/8/8/8/4QPPP/6K1 w - - 0 1', 'e2e8', 450, 'beginner', 'mateIn1 backRankMate', 'lichess'),
+('1k6/8/1K6/8/8/8/8/R7 w - - 0 1', 'a1a8', 550, 'beginner', 'mateIn1', 'lichess'),
+('5rk1/6pp/5N2/8/8/8/8/4K3 w - - 0 1', 'f6h5', 700, 'beginner', 'mateIn1', 'lichess'),
+('r3k3/8/8/8/3Q4/8/8/4K3 w - - 0 1', 'd4a4', 800, 'beginner', 'fork queenFork', 'lichess'),
+('r1bqk2r/pppp1ppp/2n2n2/4p3/1b2P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 4 5', 'f3e5', 850, 'beginner', 'fork attack', 'lichess'),
+('4k3/8/8/3n4/8/8/3R4/4K3 w - - 0 1', 'd2d5', 750, 'beginner', 'capture hanging', 'lichess'),
+
+-- LICHESS PUZZLES: Mate-in-1 (12 puzzles, rating 1412-1661)
+('8/8/8/P6p/8/2Rnk3/r7/3KN3 b - - 2 60', 'a2d2', 1658, 'advanced', 'endgame mate mateIn1 oneMove vukovicMate', 'lichess'),
+('3B4/1p4kp/2b1Pp2/1pN2RpK/1P6/7P/6r1/8 b - - 0 34', 'c6e8', 1565, 'intermediate', 'endgame mate mateIn1 morphysMate oneMove', 'lichess'),
+('8/2k2p1r/1p2p2P/p2pPnPK/P2P1P1B/2P1n3/5R2/4R3 b - - 11 47', 'f5g7', 1618, 'advanced', 'endgame mate mateIn1 oneMove pin', 'lichess'),
+('8/4RNkP/1r6/6K1/8/8/8/1q6 w - - 2 57', 'h7h8q', 1661, 'advanced', 'advancedPawn endgame mate mateIn1 oneMove promotion', 'lichess'),
+('r2qnr1k/pppb2pp/2n4B/3Nb3/8/P5QP/1PP1B1P1/R4RK1 w - - 0 19', 'f1f8', 1463, 'intermediate', 'hangingPiece kingsideAttack mate mateIn1 middlegame oneMove', 'lichess'),
+('r7/bp6/4kNQ1/1b2Pp1p/p2R1P1N/P1q5/5KPP/7R b - - 6 31', 'a7d4', 1588, 'intermediate', 'hangingPiece master mate mateIn1 middlegame oneMove', 'lichess'),
+('1rr3k1/2qN1p2/b3p1pQ/n1p5/P1P2P2/P3P2R/1b4PP/R5K1 w - - 0 24', 'h6h7', 1475, 'intermediate', 'mate mateIn1 middlegame oneMove', 'lichess'),
+('r2q1r1k/pp2b1pp/8/2p1Np2/2BpP3/P2P4/2P2PK1/R1Bb3R w - - 0 18', 'e5g6', 1566, 'intermediate', 'mate mateIn1 middlegame oneMove pin', 'lichess'),
+('2k2b1r/pp3ppp/8/BN2p1P1/2n1Nn1P/8/PP3P2/2KR4 w - - 0 25', 'd1d8', 1558, 'intermediate', 'mate mateIn1 middlegame oneMove operaMate', 'lichess'),
+('8/1P6/K1k5/8/8/5P2/1r1p3P/3R4 b - - 0 47', 'b2a2', 1541, 'intermediate', 'endgame master mate mateIn1 oneMove rookEndgame', 'lichess'),
+('4r1k1/p4pp1/8/2RKP2Q/q7/2R1P3/8/8 b - - 0 41', 'e8d8', 1412, 'intermediate', 'endgame epauletteMate mate mateIn1 oneMove', 'lichess'),
+('r7/p7/bp2NQpk/2p5/3p4/3P4/PPP1K2P/2q5 w - - 1 40', 'f6h4', 1555, 'intermediate', 'anastasiaMate endgame mate mateIn1 oneMove', 'lichess'),
+
+-- LICHESS PUZZLES: Mate-in-2 (20 puzzles, rating 1209-1635)
+('r2qk2r/ppp2pp1/2p2n2/7p/3bP1b1/2N3QP/PPP2PP1/R1B1KB1R b KQkq - 0 9', 'd4c3 g3c3 d8d1', 1350, 'intermediate', 'clearance mate mateIn2 opening short', 'lichess'),
+('8/8/8/7p/p1b4k/P6P/2p3P1/2B3K1 w - - 8 47', 'g1h2 c4f1 g2g3', 1351, 'intermediate', 'bishopEndgame endgame mate mateIn2 short', 'lichess'),
+('r5k1/1p3p2/2p1ppp1/3p4/2nP4/1QB4P/rPP1BPP1/qNKR3R b - - 4 22', 'a1b1 c1b1 a2a1', 1362, 'intermediate', 'attraction mate mateIn2 middlegame queensideAttack sacrifice short', 'lichess'),
+('rn1qkbnr/ppp2ppp/8/8/2Bp4/1Q2Pb2/PP3PPP/RNB1K2R w KQkq - 0 7', 'c4f7 e8d7 b3e6', 1310, 'intermediate', 'attackingF2F7 mate mateIn2 opening short', 'lichess'),
+('k7/P7/1K6/1N6/2n5/4p1p1/8/8 w - - 2 60', 'b6a6 e3e2 b5c7', 1535, 'intermediate', 'defensiveMove endgame knightEndgame mate mateIn2 short', 'lichess'),
+('r2qr1k1/ppp2p1p/5pPB/8/6Q1/2P5/P1p3PP/bN3K1R w - - 0 20', 'g6h7 g8h7 g4g7', 1597, 'intermediate', 'advancedPawn attraction discoveredCheck doubleCheck kingsideAttack mate mateIn2 middlegame short', 'lichess'),
+('1k5r/1pp3Qp/p7/3r4/3n4/1P6/P4PP1/2R2RK1 b - - 1 26', 'd4e2 g1h1 d5h5', 1356, 'intermediate', 'endgame fork mate mateIn2 short', 'lichess'),
+('2kr4/2p2pp1/8/1R2PP1p/6n1/8/1Q4PP/3q2BK b - - 2 28', 'd1g1 h1g1 d8d1', 1464, 'intermediate', 'attraction endgame mate mateIn2 sacrifice short', 'lichess'),
+('8/6pp/6k1/1Q6/1Ppq1pP1/7P/2P5/5K2 w - - 1 45', 'b5f5 g6h6 f5h5', 1209, 'intermediate', 'endgame mate mateIn2 queenEndgame short', 'lichess'),
+('1r6/5p1R/7R/4pPk1/2r2n2/1P3P1P/P4K2/8 w - - 0 44', 'h3h4 g5f5 h7f7', 1472, 'intermediate', 'endgame mate mateIn2 short', 'lichess'),
+('1q5r/p3kpp1/2Q1p2p/3pP2P/2n3P1/2N2P2/PrP1N3/K3R2R b - - 1 26', 'b2a2 c3a2 b8b2', 1370, 'intermediate', 'clearance mate mateIn2 middlegame sacrifice short', 'lichess'),
+('r2q1rk1/1pp2p2/p3Bp1B/8/Pb1n4/1Q6/5PPP/R5K1 w - - 0 21', 'b3g3 g8h7 g3g7', 1391, 'intermediate', 'mate mateIn2 middlegame short', 'lichess'),
+('7k/1Q4p1/p6p/8/8/5rqP/P4rP1/R5RK b - - 4 29', 'g3h3 g2h3 f3h3', 1425, 'intermediate', 'endgame mate mateIn2 sacrifice short', 'lichess'),
+('r2q2r1/4p2k/3p1bpB/p7/1P6/2N2P2/1PP3P1/2KR3R w - - 0 24', 'h6f8 f6h4 h1h4', 1469, 'intermediate', 'discoveredAttack discoveredCheck mate mateIn2 middlegame pillsburysMate short', 'lichess'),
+('2r5/kpQ2p2/r2R3p/4pb2/2N1q3/8/PP3P1P/K1R5 w - - 4 28', 'd6a6 a7a6 c7a5', 1245, 'intermediate', 'attraction mate mateIn2 middlegame pin short', 'lichess'),
+('4r3/pp1n1r1k/6p1/2p5/2B2P2/1P2P1R1/PB1q3P/2R2K2 w - - 0 29', 'g3h3 h7g8 h3h8', 1436, 'intermediate', 'mate mateIn2 middlegame operaMate pin short', 'lichess'),
+('r7/7R/2p2k2/3p4/pp6/qP1Br3/P1P1N1R1/1K6 w - - 0 29', 'g2g6 f6e5 h7h5', 1502, 'intermediate', 'mate mateIn2 middlegame pillsburysMate short', 'lichess'),
+('2kr3r/pppn1ppp/8/8/3P2n1/5N1q/PPP1BN2/R1BQR1K1 b - - 0 20', 'h3g3 g1f1 g3f2', 1618, 'advanced', 'kingsideAttack mate mateIn2 middlegame short', 'lichess'),
+('r3kbr1/pp2pp1p/5n2/3pN3/1P1Pn3/1N1QP3/q7/2RKR3 w q - 0 24', 'd3b5 e8d8 e5f7', 1510, 'intermediate', 'deflection mate mateIn2 middlegame short', 'lichess'),
+('r4r2/1ppb1p2/p2p2p1/5P1k/4P3/2PBB1R1/PKP2P1q/8 w - - 5 27', 'd3e2 h5h4 e3g5', 1635, 'advanced', 'mate mateIn2 middlegame short', 'lichess'),
+
+-- LICHESS PUZZLES: Mate-in-3 (5 puzzles, rating 1449-2117)
+('8/1b4k1/p3pr2/1p3p1Q/3P1P2/1P2pNq1/2P5/2R3RK b - - 1 35', 'b7f3 h5f3 f6h6 f3h5 h6h5', 1449, 'advanced', 'exposedKing fork long mate mateIn3 middlegame', 'lichess'),
+('7k/2pr4/4N1p1/1p5p/8/2P1Q1K1/2q3PP/8 w - - 11 42', 'e3h6 h8g8 h6f8 g8h7 e6g5', 1663, 'advanced', 'endgame exposedKing long mate mateIn3', 'lichess'),
+('6k1/pb3p2/6pQ/3q4/8/3Br3/PPP3PP/6RK b - - 2 29', 'd5g2 g1g2 e3e1 d3f1 e1f1', 1465, 'advanced', 'endgame long mate mateIn3 pin sacrifice', 'lichess'),
+('Q7/8/3B4/2p5/1rkn4/K7/8/8 b - - 2 54', 'd4b5 a3a2 b5c3 a2a1 b4b1', 2117, 'advanced', 'arabianMate endgame exposedKing fork long master mate mateIn3', 'lichess'),
+('r3k2r/ppQ1n1p1/1p1R4/6p1/8/P3qP2/BPP4P/5b1K w kq - 0 23', 'c7d7 e8f8 d7d8 a8d8 d6d8', 1723, 'advanced', 'exposedKing long mate mateIn3 middlegame pillsburysMate sacrifice', 'lichess'),
+
+-- LICHESS PUZZLES: Forks (10 puzzles, rating 1302-1561)
+('2r3k1/pp2npp1/3r3p/5q2/2BBp3/1PP3Rb/P4P2/R2Q3K w - - 1 29', 'g3g7 g8f8 g7f7 f5f7 c4f7', 1395, 'intermediate', 'crushing fork long middlegame', 'lichess'),
+('3r4/ppp1kp1p/4np2/7R/8/2N5/PPPrRPPP/5K2 b - - 9 21', 'd2e2 f1e2 e6f4 e2e3 f4h5', 1421, 'intermediate', 'attraction crushing endgame fork long', 'lichess'),
+('1r4k1/p1q1bppp/2rpb3/2nnp3/2N1P3/P3BP2/1PB1Q1PP/1R1R2K1 w - - 1 22', 'e4d5 e6d5 d1d5', 1440, 'intermediate', 'advantage fork middlegame short', 'lichess'),
+('r3r1k1/1bp2p2/1p4pp/p7/Pb2NPnq/1P1P4/2P1Q1BP/B2R1RK1 w - - 1 23', 'e2g4 h4g4 e4f6 g8f8 f6g4 b7g2 g1g2', 1502, 'intermediate', 'attraction crushing fork master middlegame sacrifice veryLong', 'lichess'),
+('1r2r1k1/ppp1q1pp/4b3/4P3/1Q1R1P2/8/P5PP/R1B3K1 b - - 0 19', 'c7c5 b4a3 c5d4 a3e7 e8e7', 1442, 'intermediate', 'crushing fork long middlegame', 'lichess'),
+('rnbqk2r/ppp3pp/5n2/3P1p2/1b2pB2/2N5/PP3PPP/R2QKBNR w KQkq - 1 8', 'd1a4 c7c6 a4b4', 1524, 'intermediate', 'crushing fork master opening short', 'lichess'),
+('1r1q1rk1/b3n1pp/b4p2/p1ppp3/N5Q1/PP2P1P1/1BP2PBP/R3R1K1 w - - 0 16', 'g4e6 g8h8 e6a6', 1424, 'intermediate', 'crushing fork middlegame short', 'lichess'),
+('r2qk2r/1p3pbp/p1npb1p1/3np3/4P3/2NB4/PPP2PPP/R1BQK2R w KQkq - 0 12', 'e4d5 e6d5 c3d5 d8a5 d5c3', 1460, 'intermediate', 'advantage defensiveMove fork long opening', 'lichess'),
+('3rr1k1/ppp2ppp/1n6/8/q3p2P/PQ5R/1P2BPP1/4RK2 w - - 3 21', 'b3a4 b6a4 e2b5 a4c5 b5e8', 1561, 'intermediate', 'advantage fork long middlegame', 'lichess'),
+('8/Q7/7r/8/6K1/1r4p1/4k1P1/8 w - - 3 65', 'a7a2 e2e3 a2b3', 1302, 'intermediate', 'crushing endgame fork master queenRookEndgame short', 'lichess'),
+
+-- LICHESS PUZZLES: Pins (10 puzzles, rating 1298-1950)
+('2r1k2r/1p2bppp/1q1p4/p2Pp1P1/P4n1P/1N3P2/1PPQ4/2KR1B1R b k - 0 17', 'b6b3 f1b5 e8f8', 1528, 'intermediate', 'advantage defensiveMove middlegame pin short', 'lichess'),
+('1Q6/3kr3/2q4p/2p1pp1P/2Bb4/1P6/P6K/4R3 w - - 5 44', 'c4b5 c6b5 b8b5', 1298, 'intermediate', 'crushing endgame pin short', 'lichess'),
+('8/R5pk/5p1p/P2b3N/8/7P/r5PK/8 w - - 2 43', 'h5f6 h7g6 f6d5', 1687, 'advanced', 'crushing endgame pin short', 'lichess'),
+('3rr1k1/pp3ppp/1qn5/2bp1b2/1PP5/P4N1P/1B1NBRP1/R4QK1 b - - 0 17', 'c5f2 f1f2 e8e2', 1675, 'advanced', 'advantage kingsideAttack middlegame pin short', 'lichess'),
+('r2qk1nr/p2b2pp/2pbpp2/2ppN3/5P2/1P2P2P/PBPP2P1/RN1QK2R w KQkq - 0 10', 'd1h5 g7g6 e5g6 h7g6 h5h8', 1302, 'intermediate', 'crushing long opening pin trappedPiece', 'lichess'),
+('2b2rk1/3pbppp/3r4/q7/2p5/6P1/PPQBPPBP/R3K2R b KQ - 3 16', 'd6d2 c2d2 e7b4 d2b4 a5b4', 1441, 'intermediate', 'crushing long master middlegame pin sacrifice', 'lichess'),
+('N1bk3r/pp1p1ppp/8/4P3/1b6/q1B2Q2/P2K1PPP/R4B1R b - - 2 14', 'a3b2 d2d1 b4c3', 1654, 'advanced', 'crushing deflection middlegame pin short', 'lichess'),
+('5r1k/bp1R4/p1p3p1/4p2p/7P/2P1NrP1/PP2RP2/6K1 b - - 2 29', 'f3f2 e2f2 a7e3', 1950, 'advanced', 'capturingDefender crushing deflection endgame pin short', 'lichess'),
+('4rR2/3NP1kp/2p3p1/5p2/8/2rp3P/5PP1/4R1K1 b - - 3 34', 'd3d2 e1d1 c3c1 g1h2 c1d1', 1584, 'intermediate', 'advancedPawn crushing endgame long pin', 'lichess'),
+('4r1k1/1p3pp1/p5r1/2P4p/4P3/P2P1Nq1/5Q2/R3RK2 b - - 3 32', 'g3h3 f1e2 g6g2 e2e3 g2f2', 1374, 'intermediate', 'clearance crushing long middlegame pin', 'lichess')
+
+ON CONFLICT DO NOTHING;

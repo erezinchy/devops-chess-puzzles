@@ -4,13 +4,31 @@ const db = require('../models/db');
 
 router.get('/random', async (req, res) => {
   try {
-    const { difficulty } = req.query;
+    const { difficulty, min_rating, exclude } = req.query;
     let query = 'SELECT * FROM puzzles';
+    const conditions = [];
     const params = [];
 
     if (difficulty) {
-      query += ' WHERE difficulty = $1';
       params.push(difficulty);
+      conditions.push(`difficulty = $${params.length}`);
+    }
+
+    if (min_rating) {
+      params.push(parseInt(min_rating, 10));
+      conditions.push(`rating >= $${params.length}`);
+    }
+
+    if (exclude) {
+      const ids = exclude.split(',').map(Number).filter(n => n > 0);
+      if (ids.length > 0) {
+        params.push(ids);
+        conditions.push(`id != ALL($${params.length})`);
+      }
+    }
+
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ');
     }
 
     query += ' ORDER BY RANDOM() LIMIT 1';

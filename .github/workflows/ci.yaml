@@ -21,12 +21,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: app/backend/package-lock.json
 
       - name: Install backend dependencies
         working-directory: app/backend
-        run: npm ci
+        run: npm install
 
       - name: Lint backend
         working-directory: app/backend
@@ -38,7 +36,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: app/frontend
-        run: npm ci
+        run: npm install
 
       - name: Lint frontend
         working-directory: app/frontend
@@ -116,7 +114,7 @@ jobs:
       - name: Install and build
         working-directory: app/frontend
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Configure AWS credentials

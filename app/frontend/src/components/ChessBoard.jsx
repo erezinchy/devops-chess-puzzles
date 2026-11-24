@@ -1,16 +1,59 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useImperativeHandle, forwardRef } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
 
-function ChessBoard({ fen, solutionMoves, onSolved, onFailed }) {
+const ChessBoard = forwardRef(function ChessBoard({ fen, solutionMoves, onSolved, onFailed, solveOnFirstMove }, ref) {
   const [game, setGame] = useState(new Chess(fen));
   const [moveIndex, setMoveIndex] = useState(0);
-  const [boardOrientation, setBoardOrientation] = useState(
-    fen.includes(' b ') ? 'white' : 'black'
+  const [boardOrientation] = useState(
+    fen.includes(' b ') ? 'black' : 'white'
   );
   const [highlightSquares, setHighlightSquares] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const moves = solutionMoves ? solutionMoves.split(' ') : [];
+
+  function playRemainingMoves(g, startIdx) {
+    setLocked(true);
+    let i = startIdx;
+    function playNext() {
+      if (i >= moves.length) {
+        onSolved?.();
+        return;
+      }
+      const move = moves[i];
+      const from = move.slice(0, 2);
+      const to = move.slice(2, 4);
+      const promotion = move.length > 4 ? move[4] : undefined;
+      const result = g.move({ from, to, promotion });
+      if (result) {
+        setHighlightSquares({
+          [from]: { backgroundColor: 'rgba(255, 165, 0, 0.5)' },
+          [to]: { backgroundColor: 'rgba(255, 165, 0, 0.5)' },
+        });
+        setGame(new Chess(g.fen()));
+        i++;
+        setTimeout(playNext, 800);
+      }
+    }
+    playNext();
+  }
+
+  useImperativeHandle(ref, () => ({
+    playSolution() {
+      const g = new Chess(fen);
+      playRemainingMoves(g, 0);
+    },
+    showHint() {
+      if (moveIndex >= moves.length) return;
+      const move = moves[moveIndex];
+      const from = move.slice(0, 2);
+      setHighlightSquares({
+        [from]: { backgroundColor: 'rgba(0, 150, 255, 0.5)' },
+      });
+      setTimeout(() => setHighlightSquares({}), 1500);
+    }
+  }));
 
   const makeComputerMove = useCallback(
     (currentGame, currentMoveIndex) => {
@@ -33,6 +76,7 @@ function ChessBoard({ fen, solutionMoves, onSolved, onFailed }) {
   );
 
   function onDrop(sourceSquare, targetSquare) {
+    if (locked) return false;
     if (moveIndex >= moves.length) return false;
 
     const expectedMove = moves[moveIndex];
@@ -70,6 +114,8 @@ function ChessBoard({ fen, solutionMoves, onSolved, onFailed }) {
 
     if (nextIndex >= moves.length) {
       onSolved?.();
+    } else if (solveOnFirstMove && moveIndex === 0) {
+      onSolved?.();
     } else {
       makeComputerMove(newGame, nextIndex);
     }
@@ -78,18 +124,18 @@ function ChessBoard({ fen, solutionMoves, onSolved, onFailed }) {
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: '480px', margin: '0 auto' }}>
+    <div style={{ width: '100%', maxWidth: '560px', margin: '0 auto' }}>
       <Chessboard
         position={game.fen()}
         onPieceDrop={onDrop}
         boardOrientation={boardOrientation}
         customSquareStyles={highlightSquares}
-        boardWidth={Math.min(window.innerWidth - 32, 480)}
+        boardWidth={Math.min(window.innerWidth - 32, window.innerHeight - 300, 560)}
         customDarkSquareStyle={{ backgroundColor: 'var(--board-dark, #b58863)' }}
         customLightSquareStyle={{ backgroundColor: 'var(--board-light, #f0d9b5)' }}
       />
     </div>
   );
-}
+});
 
 export default ChessBoard;
