@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: chess-puzzle
+  namespace: argocd
+spec:
+  description: Chess Puzzle Trainer application
+  sourceRepos:
+    - https://github.com/erezinchy/devops-chess-puzzles.git
+  destinations:
+    - namespace: chess-puzzle
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: "*"
+    - group: apps
+      kind: "*"
+    - group: networking.k8s.io
+      kind: "*"
+    - group: autoscaling
+      kind: "*"
