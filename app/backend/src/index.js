@@ -16,13 +16,13 @@ app.use(helmet());
 app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 app.use(express.json());
 
+app.use('/api/health', healthRoutes);
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
 });
 app.use('/api/', limiter);
-
-app.use('/api/health', healthRoutes);
 app.use('/api/puzzles', puzzleRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/scores', scoreRoutes);
