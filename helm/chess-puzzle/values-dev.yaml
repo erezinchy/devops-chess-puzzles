@@ -1,0 +1,45 @@
+backend:
+  replicaCount: 1
+  image:
+    repository: chess-puzzle-backend
+    tag: dev-latest
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 128Mi
+  hpa:
+    enabled: false
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: chess-puzzle-frontend
+    tag: dev-latest
+  resources:
+    requests:
+      cpu: 25m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+
+postgres:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+  storage:
+    size: 1Gi
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+
+networkPolicy:
+  enabled: false
