@@ -1,8 +1,8 @@
 backend:
   replicaCount: 1
   image:
-    repository: chess-puzzle-backend
-    tag: dev-latest
+    repository: 428194419624.dkr.ecr.us-east-1.amazonaws.com/chess-puzzle-backend
+    tag: latest
   resources:
     requests:
       cpu: 50m
@@ -16,8 +16,10 @@ backend:
 frontend:
   replicaCount: 1
   image:
-    repository: chess-puzzle-frontend
-    tag: dev-latest
+    repository: 428194419624.dkr.ecr.us-east-1.amazonaws.com/chess-puzzle-frontend
+    tag: latest
+  service:
+    type: LoadBalancer
   resources:
     requests:
       cpu: 25m
@@ -36,6 +38,7 @@ postgres:
       memory: 256Mi
   storage:
     size: 1Gi
+    storageClass: gp2
 
 ingress:
   annotations:

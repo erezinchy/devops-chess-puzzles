@@ -78,14 +78,15 @@ devops-portfolio-project/
 │       │   ├── models/      # db connection, SQL schema
 │       │   └── services/    # puzzle importer
 │       └── Dockerfile
-├── infra/
-│   └── terraform/
-│       ├── modules/       # vpc, eks, rds, s3-cloudfront, api-gateway
-│       └── envs/          # dev, prod configurations
+├── terraform/
+│   ├── modules/           # vpc, eks
+│   └── environments/      # dev, prod configurations
 ├── k8s/
 │   ├── base/              # core K8s manifests
 │   └── overlays/          # dev/prod Kustomize patches
-├── argocd/                # ArgoCD application + KEDA config
+├── helm/                  # Helm chart (chess-puzzle)
+├── k8s/argocd/            # ArgoCD application + project
+├── k8s/autoscaling/       # KEDA + Karpenter configs
 ├── .github/
 │   └── workflows/         # CI pipeline + Terraform automation
 ├── docker-compose.yaml    # Local development
@@ -118,57 +119,37 @@ npm install
 npm run dev
 ```
 
-## Deploy to AWS
+## Deploy to EKS
 
-### Prerequisites
-- AWS CLI configured
-- Terraform >= 1.5
-- kubectl
-- ArgoCD CLI (optional)
+Infra: Terraform creates VPC + EKS + Spot nodes. App: Helm deploys backend/frontend/postgres pods. Data: seeded from git on each spin-up.
 
-### Steps
-
-1. **Create Terraform state bucket:**
-   ```bash
-   aws s3 mb s3://chess-puzzle-terraform-state --region us-east-1
-   aws dynamodb create-table \
-     --table-name terraform-locks \
-     --attribute-definitions AttributeName=LockID,AttributeType=S \
-     --key-schema AttributeName=LockID,KeyType=HASH \
-     --billing-mode PAY_PER_REQUEST
-   ```
-
-2. **Apply Terraform:**
-   ```bash
-   cd infra/terraform/envs/dev
-   terraform init
-   terraform plan
-   terraform apply
-   ```
-
-3. **Configure kubectl:**
-   ```bash
-   aws eks update-kubeconfig --name chess-puzzle-dev --region us-east-1
-   ```
-
-4. **Install ArgoCD:**
-   ```bash
-   kubectl create namespace argocd
-   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-   kubectl apply -f argocd/application.yaml
-   ```
-
-5. **Deploy frontend to S3:**
-   ```bash
-   cd app/frontend
-   npm run build
-   aws s3 sync dist/ s3://chess-puzzle-dev-frontend --delete
-   ```
-
-### Tear Down (stop billing)
 ```bash
-cd infra/terraform/envs/dev
-terraform destroy
+# 1. Provision infrastructure (~15 min)
+cd terraform/environments/dev
+terraform init && terraform apply
+
+# 2. Connect kubectl
+aws eks update-kubeconfig --region us-east-1 --name chess-puzzle-dev
+
+# 3. Build & push images to ECR
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+docker build -t <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/chess-backend app/backend
+docker build -t <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/chess-frontend app/frontend
+docker push <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/chess-backend
+docker push <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/chess-frontend
+
+# 4. Deploy with Helm
+helm install chess-puzzle helm/chess-puzzle -f helm/chess-puzzle/values-dev.yaml -n chess-puzzle --create-namespace
+
+# 5. Seed database
+cat app/backend/src/models/schema.sql | kubectl exec -i postgres-0 -n chess-puzzle -- psql -U chess -d chess_puzzles
+cat app/backend/src/models/seed.sql | kubectl exec -i postgres-0 -n chess-puzzle -- psql -U chess -d chess_puzzles
+
+# 6. Get public URL (open on phone too)
+kubectl get svc frontend -n chess-puzzle
+
+# 7. Tear down when done ($0 after destroy)
+cd terraform/environments/dev && terraform destroy
 ```
 
 ## Features
@@ -188,6 +169,19 @@ terraform destroy
 | ~$5-10/weekend demo | — | — |
 
 Recommended: `terraform apply` when demoing, `terraform destroy` when done.
+
+## Planned Improvements
+
+- Replace nginx Ingress with **Gateway API** + AWS LB Controller for native K8s routing
+- Add **Istio Ambient Mesh** for mTLS and traffic management (no sidecar overhead)
+- Migrate from HPA to **KEDA** for event-driven autoscaling (HTTP rate, queue depth)
+- Add **Karpenter** for intelligent node autoscaling with Spot instances
+- Replace Cluster Autoscaler with Karpenter-managed node pools
+- Add **OpenTelemetry** → Grafana for unified observability (traces, metrics, logs)
+- Add **External Secrets Operator** + IRSA for secure secret management
+- Add **Cognito** authentication with JWT for user accounts and progress tracking
+- Add **ArgoCD** auto-sync for zero-touch GitOps deployments
+- Add **Crossplane** for managing AWS resources as K8s CRDs
 
 ## GitHub Secrets Required
 

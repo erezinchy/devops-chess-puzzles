@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ChessBoard from '../components/ChessBoard';
 import api from '../services/api';
@@ -17,10 +17,6 @@ function Puzzle() {
   const mode = searchParams.get('mode') || 'random';
   const recentRef = useRef(getRecentPuzzles());
 
-  useEffect(() => {
-    loadPuzzle();
-  }, [mode, difficulty]);
-
   function getRecentPuzzles() {
     try { return JSON.parse(localStorage.getItem('recentPuzzles') || '[]'); }
     catch { return []; }
@@ -32,16 +28,10 @@ function Puzzle() {
     if (recent.length > 25) recent.shift();
     recentRef.current = recent;
     try { localStorage.setItem('recentPuzzles', JSON.stringify(recent)); }
-    catch {}
+    catch (_e) { /* localStorage may be unavailable */ }
   }
 
-  useEffect(() => {
-    if (status !== 'playing') return;
-    const interval = setInterval(() => setTimer((t) => t + 1), 1000);
-    return () => clearInterval(interval);
-  }, [status]);
-
-  async function loadPuzzle() {
+  const loadPuzzle = useCallback(async function loadPuzzle() {
     setLoading(true);
     setStatus('playing');
     setTimer(0);
@@ -61,7 +51,7 @@ function Puzzle() {
       let res = await api.get(endpoint);
       if (res.status === 404 || !res.data?.id) {
         recentRef.current = [];
-        try { localStorage.removeItem('recentPuzzles'); } catch {}
+        try { localStorage.removeItem('recentPuzzles'); } catch (_e) { /* ignore */ }
         const retryParams = new URLSearchParams();
         if (difficulty !== 'all') retryParams.set('difficulty', difficulty);
         retryParams.set('min_rating', '1200');
@@ -79,7 +69,17 @@ function Puzzle() {
       });
     }
     setLoading(false);
-  }
+  }, [mode, difficulty]);
+
+  useEffect(() => {
+    loadPuzzle();
+  }, [loadPuzzle]);
+
+  useEffect(() => {
+    if (status !== 'playing') return;
+    const interval = setInterval(() => setTimer((t) => t + 1), 1000);
+    return () => clearInterval(interval);
+  }, [status]);
 
   function handleShowSolution() {
     setShowingSolution(true);

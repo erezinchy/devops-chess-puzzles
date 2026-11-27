@@ -1,4 +1,4 @@
-import { useState, useCallback, useImperativeHandle, forwardRef } from 'react';
+import { useState, useCallback, useImperativeHandle, forwardRef, useMemo } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
 
@@ -11,7 +11,7 @@ const ChessBoard = forwardRef(function ChessBoard({ fen, solutionMoves, onSolved
   const [highlightSquares, setHighlightSquares] = useState({});
   const [locked, setLocked] = useState(false);
 
-  const moves = solutionMoves ? solutionMoves.split(' ') : [];
+  const moves = useMemo(() => solutionMoves ? solutionMoves.split(' ') : [], [solutionMoves]);
 
   function playRemainingMoves(g, startIdx) {
     setLocked(true);
