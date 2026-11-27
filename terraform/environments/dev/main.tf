@@ -60,3 +60,13 @@ module "eks" {
   node_max_size       = var.node_max_size
   tags                = local.common_tags
 }
+
+module "cloudfront" {
+  source = "../../modules/cloudfront"
+  count  = var.elb_domain != "" ? 1 : 0
+
+  project       = var.project
+  environment   = var.environment
+  origin_domain = var.elb_domain
+  tags          = local.common_tags
+}

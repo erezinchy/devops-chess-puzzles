@@ -3,10 +3,11 @@ const readline = require('readline');
 const db = require('../models/db');
 
 function getDifficulty(rating) {
-  if (rating < 1200) return 'beginner';
-  if (rating < 1600) return 'intermediate';
-  if (rating < 2000) return 'advanced';
-  return 'expert';
+  if (rating < 1000) return 'beginner';
+  if (rating < 1400) return 'intermediate';
+  if (rating < 1700) return 'advanced';
+  if (rating < 2000) return 'expert';
+  return 'master';
 }
 
 async function importPuzzles(csvPath, limit = 1000) {

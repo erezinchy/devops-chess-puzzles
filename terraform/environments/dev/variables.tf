@@ -69,3 +69,9 @@ variable "node_max_size" {
   type        = number
   default     = 3
 }
+
+variable "elb_domain" {
+  description = "ELB DNS name for CloudFront origin (from kubectl get svc)"
+  type        = string
+  default     = ""
+}

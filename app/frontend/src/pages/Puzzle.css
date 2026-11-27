@@ -1,3 +1,8 @@
+.puzzle-page {
+  padding-top: 4px;
+  padding-bottom: 20px;
+}
+
 .puzzle-loading {
   text-align: center;
   padding: 40px;
@@ -46,7 +51,6 @@
 
 .turn-indicator {
   font-weight: 700;
-  color: var(--accent, #4a90d9);
 }
 
 .difficulty-selector {
@@ -107,4 +111,43 @@
 
 .btn-solution:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.move-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.btn-move-nav {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--text-secondary, #666);
+  background: var(--bg-card, #2a2a2a);
+  color: var(--text-primary, #eee);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-move-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.btn-move-nav:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.move-counter {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #999);
+  font-variant-numeric: tabular-nums;
+  min-width: 50px;
+  text-align: center;
 }

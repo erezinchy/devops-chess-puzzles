@@ -11,7 +11,8 @@ function Puzzle() {
   const [timer, setTimer] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showingSolution, setShowingSolution] = useState(false);
-  const [difficulty, setDifficulty] = useState('intermediate');
+  const [difficulty, setDifficulty] = useState('advanced');
+  const [moveInfo, setMoveInfo] = useState(null);
   const boardRef = useRef(null);
 
   const mode = searchParams.get('mode') || 'random';
@@ -36,6 +37,7 @@ function Puzzle() {
     setStatus('playing');
     setTimer(0);
     setShowingSolution(false);
+    setMoveInfo(null);
     try {
       let endpoint;
       if (mode === 'daily') {
@@ -43,19 +45,20 @@ function Puzzle() {
       } else {
         const params = new URLSearchParams();
         if (difficulty !== 'all') params.set('difficulty', difficulty);
-        params.set('min_rating', '1200');
         const recent = recentRef.current;
         if (recent.length > 0) params.set('exclude', recent.join(','));
         endpoint = `/api/puzzles/random?${params}`;
       }
-      let res = await api.get(endpoint);
-      if (res.status === 404 || !res.data?.id) {
+      let res;
+      try {
+        res = await api.get(endpoint);
+      } catch {
         recentRef.current = [];
         try { localStorage.removeItem('recentPuzzles'); } catch (_e) { /* ignore */ }
-        const retryParams = new URLSearchParams();
-        if (difficulty !== 'all') retryParams.set('difficulty', difficulty);
-        retryParams.set('min_rating', '1200');
-        res = await api.get(`/api/puzzles/random?${retryParams}`);
+        res = await api.get('/api/puzzles/random');
+      }
+      if (!res.data?.id) {
+        res = await api.get('/api/puzzles/random');
       }
       trackPuzzle(res.data.id);
       setPuzzle(res.data);
@@ -95,6 +98,18 @@ function Puzzle() {
     }
   }
 
+  function handleMoveChange(info) {
+    setMoveInfo(info);
+  }
+
+  function handleGoBack() {
+    if (boardRef.current) boardRef.current.goBack();
+  }
+
+  function handleGoForward() {
+    if (boardRef.current) boardRef.current.goForward();
+  }
+
   function formatTime(seconds) {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
@@ -105,8 +120,10 @@ function Puzzle() {
     return <div className="puzzle-loading">Loading puzzle...</div>;
   }
 
-  const turnColor = puzzle.fen.includes(' b ') ? 'Black' : 'White';
-  const isMultiMove = puzzle.moves && puzzle.moves.split(' ').length > 1;
+  const turnColor = puzzle.fen.includes(' b ') ? 'White' : 'Black';
+  const turnStyle = { color: turnColor === 'White' ? '#ffffff' : '#aaa', fontStyle: turnColor === 'Black' ? 'italic' : 'normal' };
+  const canGoBack = moveInfo && moveInfo.moveIndex > 1;
+  const canGoForward = boardRef.current?.getMoveInfo?.()?.canGoForward;
 
   return (
     <div className="puzzle-page">
@@ -121,13 +138,16 @@ function Puzzle() {
       <div className="difficulty-selector">
         <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
           <option value="all">All Levels</option>
+          <option value="beginner">Beginner</option>
           <option value="intermediate">Intermediate</option>
           <option value="advanced">Advanced</option>
+          <option value="expert">Expert</option>
+          <option value="master">Master</option>
         </select>
       </div>
 
       <div className="puzzle-instruction">
-        <span className="turn-indicator">{turnColor} to move</span>
+        <span className="turn-indicator" style={turnStyle}>{turnColor} to move</span>
         {status === 'playing' && ' — find the best move!'}
         {status === 'solved' && ' — Solved! Great job!'}
         {status === 'failed' && !showingSolution && ' — Wrong move!'}
@@ -135,12 +155,10 @@ function Puzzle() {
       </div>
 
       <div className="puzzle-actions">
-        {status !== 'playing' && (
-          <button onClick={loadPuzzle} className="btn-next">
-            Next Puzzle
-          </button>
-        )}
-        {status === 'playing' && (
+        <button onClick={loadPuzzle} className="btn-next">
+          {status === 'playing' ? 'Skip' : 'Next Puzzle'}
+        </button>
+        {(status === 'playing' || (status === 'failed' && !showingSolution)) && (
           <button onClick={handleHint} className="btn-hint">
             Hint
           </button>
@@ -159,9 +177,21 @@ function Puzzle() {
           solutionMoves={puzzle.moves}
           onSolved={() => setStatus('solved')}
           onFailed={() => setStatus('failed')}
-          solveOnFirstMove={isMultiMove}
+          onMoveChange={handleMoveChange}
         />
       )}
+
+      <div className="move-nav">
+        <button onClick={handleGoBack} disabled={!canGoBack} className="btn-move-nav" title="Previous move">
+          &#9664;
+        </button>
+        <span className="move-counter">
+          {moveInfo ? `${Math.max(0, moveInfo.moveIndex - 1)} / ${moveInfo.totalMoves - 1}` : '—'}
+        </span>
+        <button onClick={handleGoForward} disabled={!canGoForward} className="btn-move-nav" title="Next move">
+          &#9654;
+        </button>
+      </div>
     </div>
   );
 }

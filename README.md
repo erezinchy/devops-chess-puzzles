@@ -49,9 +49,8 @@ A mobile-first Progressive Web App for chess puzzle training, built to showcase 
 - **IaC:** Terraform (modular, multi-environment)
 - **Container Orchestration:** EKS (Kubernetes)
 - **Container Registry:** ECR
-- **CDN:** CloudFront + S3
-- **API Gateway:** AWS API Gateway (HTTP API)
-- **Database:** RDS PostgreSQL
+- **CDN/TLS:** CloudFront (HTTPS termination, static asset caching)
+- **Database:** PostgreSQL (in-cluster StatefulSet)
 
 ### DevOps
 - **CI/CD:** GitHub Actions
@@ -148,7 +147,11 @@ cat app/backend/src/models/seed.sql | kubectl exec -i postgres-0 -n chess-puzzle
 # 6. Get public URL (open on phone too)
 kubectl get svc frontend -n chess-puzzle
 
-# 7. Tear down when done ($0 after destroy)
+# 7. Add HTTPS via CloudFront (optional — paste ELB hostname from step 6)
+cd terraform/environments/dev
+terraform apply -var="elb_domain=<ELB_HOSTNAME>"
+
+# 8. Tear down when done ($0 after destroy)
 cd terraform/environments/dev && terraform destroy
 ```
 
@@ -182,6 +185,8 @@ Recommended: `terraform apply` when demoing, `terraform destroy` when done.
 - Add **Cognito** authentication with JWT for user accounts and progress tracking
 - Add **ArgoCD** auto-sync for zero-touch GitOps deployments
 - Add **Crossplane** for managing AWS resources as K8s CRDs
+- Add **Route53** custom domain + **ACM** certificate for branded HTTPS URL
+- Configure **GitHub Actions secrets** (`AWS_ROLE_ARN`) to enable CI/CD deploy jobs
 
 ## GitHub Secrets Required
 

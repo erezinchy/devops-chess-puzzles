@@ -17,3 +17,8 @@ output "configure_kubectl" {
   description = "Command to configure kubectl"
   value       = "aws eks update-kubeconfig --region ${var.aws_region} --name ${module.eks.cluster_name}"
 }
+
+output "cloudfront_url" {
+  description = "CloudFront HTTPS URL"
+  value       = var.elb_domain != "" ? module.cloudfront[0].distribution_url : "Set elb_domain variable after Helm deploy"
+}
